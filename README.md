@@ -1,2 +1,2 @@
 # ExpandableTableview
-Tableview with expandable tableview
+Tableview with expandable cells
