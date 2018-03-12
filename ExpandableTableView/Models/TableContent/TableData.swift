@@ -8,6 +8,6 @@
 
 import UIKit
 
-class TableContent: NSObject {
-    var contentArray:[String] = []
+class TableData: NSObject {
+    var contentList:[String]?
 }

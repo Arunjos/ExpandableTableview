@@ -8,11 +8,9 @@
 
 import Foundation
 
-extension TableContent {
-    
-    public static func createTablecontentFromArray(tableContentData:[String]) -> TableContent {
-        let tableContent = TableContent()
-        return tableContent
+extension TableData {
+    public func getTableContentFromData(tableContentData:Any?) -> TableData {
+        self.contentList = (tableContentData as? [String]) ?? []
+        return self
     }
-    
 }
