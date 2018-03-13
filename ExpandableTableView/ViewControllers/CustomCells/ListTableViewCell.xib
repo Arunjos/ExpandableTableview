@@ -22,8 +22,7 @@
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dnN-tK-fkm">
                         <rect key="frame" x="1" y="1" width="318" height="41.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <string key="text">Tail pork chop alcatra jowl pork belly.  Ham hock cow brisket turducken meatloaf.  Fatback shoulder beef ribs pork loin sirloin cow t-bone.  Jowl brisket boudin pastrami filet mignon tenderloin short loin andouille pork chop tongue.  Sausage pig flank shank tongue.  Capicola buffalo shoulder andouille turkey.  Pancetta flank capicola pig, buffalo doner ham biltong alcatra short loin.</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                 </subviews>
