@@ -11,7 +11,7 @@ import UIKit
 
 class StringContollers{
     
-    func stringVisibleIn(textView:UITextView, content:String) -> String{
+    func stringVisibleIn(textView:UITextView, content:String) -> (String, Bool){
         // get textview font and line break mode
         let font = textView.font;
         let lineBreakMode = textView.textContainer.lineBreakMode;
@@ -64,8 +64,8 @@ class StringContollers{
                                                                                                attributes:attributes,
                                                                                                context: nil).size.height <= textViewContentHeight)); // getout from loop if heght exceeds limited height
             
-            return String(content[..<prev]); // return the string until previous index
+            return (String(content[..<prev]), true); // return the string until previous index
         }
-        return content; // return full content
+        return (content, false); // return full content
     }
 }

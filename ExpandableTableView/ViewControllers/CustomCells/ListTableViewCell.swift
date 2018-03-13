@@ -59,8 +59,9 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         self.contentTextView.text = content
         self.contentTextView.setNeedsLayout()
         self.contentTextView.layoutIfNeeded()
-        self.contentTextView.text = StringContollers().stringVisibleIn(textView: self.contentTextView, content: content)
-        print("maximum fit strings: ", StringContollers().stringVisibleIn(textView: self.contentTextView, content: content))
+        let (fitContent, isTrimmed) = StringContollers().stringVisibleIn(textView:self.contentTextView, content: content)
+        self.contentTextView.text = fitContent
+        print("maximum fit strings: ", fitContent)
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
