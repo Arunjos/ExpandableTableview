@@ -33,7 +33,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     
     func setupView(content:String){
         
-        self.contentTextView.textContainer.maximumNumberOfLines = 3;// set line length
+        self.contentTextView.textContainer.maximumNumberOfLines = 2;// set line length
         self.contentTextView.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         
 //        let text = NSMutableAttributedString(string:content)
@@ -56,8 +56,11 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
 //        self.contentTextView.attributedText = text
 //        self.contentTextView.delegate = self
 //        self.contentTextView.tag = 13
-        self.contentTextView.text = self.getFitString(content: content, textView: self.contentTextView)
-        print("maximum fit strings: ", self.getFitString(content: content, textView: self.contentTextView))
+        self.contentTextView.text = content
+        self.contentTextView.setNeedsLayout()
+        self.contentTextView.layoutIfNeeded()
+        self.contentTextView.text = StringContollers().stringVisibleIn(textView: self.contentTextView, content: content)
+        print("maximum fit strings: ", StringContollers().stringVisibleIn(textView: self.contentTextView, content: content))
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
@@ -65,51 +68,6 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         // **Perform sign in action here**
         
         return false
-    }
-    
-    func getFitString(content:String, textView:UITextView) -> String{
-        
-        let font = textView.font;
-        let lineBreakMode = textView.textContainer.lineBreakMode;
-        
-        let textViewWidth = textView.frame.size.width - (textView.textContainer.lineFragmentPadding * 2)
-        let textViewHeight = textView.frame.size.height
-        
-        let sizeConstraint = CGSize(width: textViewWidth, height: CGFloat.greatestFiniteMagnitude)
-        
-        let attributes = [
-            NSAttributedStringKey.font : font ?? UIFont()]
-        let attributedText = NSAttributedString(string: content, attributes: attributes)
-        
-        let boundingRect = attributedText.boundingRect(with: sizeConstraint, options: .usesLineFragmentOrigin, context: nil)
-        
-        if (boundingRect.size.height > textViewHeight)
-        {
-            var index = content.startIndex
-            var prev = content.startIndex
-            let characterSet = NSCharacterSet.whitespacesAndNewlines;
-            
-            repeat{
-                
-                prev = index;
-                if lineBreakMode == NSLineBreakMode.byCharWrapping{
-                    index = content.index(after: index);
-                }
-                else{
-                    let stringIndexRange = content.rangeOfCharacter(from: characterSet, options: String.CompareOptions(rawValue: 0), range:(index ..< content.endIndex))
-                    if let stringIndexRange = stringIndexRange{
-                        index = stringIndexRange.upperBound
-                    }
-                }
-            }
-                while ((index <= content.endIndex) && ( String(content[..<index]).boundingRect(with: sizeConstraint, options:NSStringDrawingOptions.usesLineFragmentOrigin,
-                                                                                               attributes:attributes,
-                                                                                               context: nil).size.height <= textViewHeight));
-            
-            return String(content[..<prev]);
-        }
-        
-        return content;
     }
 }
 

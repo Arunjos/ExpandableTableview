@@ -65,7 +65,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return UITableViewAutomaticDimension;//Choose your custom row height
+        return 50//UITableViewAutomaticDimension;//Choose your custom row height
     }
     
     
