@@ -14,7 +14,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var listTableView: UITableView!
     var tableData:TableData?
     let cellReuseIdentifier = "ContentCellIdentifier"
-    
+    var isReadMoreTapped = false
+    var indexOfReadMore = -1
     
     //MARK: didload methods
     override func viewDidLoad() {
@@ -55,7 +56,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListTableViewCell
-        cell?.setupView(content:tableData?.contentList?[indexPath.row] ?? "")
+        
+        if self.isReadMoreTapped && self.indexOfReadMore == indexPath.row{
+            cell?.setupCellForExpand(listData: tableData ?? TableData(), index:indexPath)
+        }else{
+            cell?.setupCellForCollapse(listData:tableData ?? TableData(), index:indexPath)
+        }
         return cell ?? ListTableViewCell()
     }
     
@@ -65,8 +71,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 50//UITableViewAutomaticDimension;//Choose your custom row height
+        return 55//UITableViewAutomaticDimension;//Choose your custom row height
     }
-    
     
 }

@@ -11,7 +11,7 @@ import UIKit
 
 class StringContollers{
     
-    func stringVisibleIn(textView:UITextView, content:String) -> (String, Bool){
+    func stringVisibleIn(textView:UITextView, content:String, truncateTail:String) -> (String, Bool, String){
         // get textview font and line break mode
         let font = textView.font;
         let lineBreakMode = textView.textContainer.lineBreakMode;
@@ -46,7 +46,7 @@ class StringContollers{
             var index = content.startIndex // used to store indexes of whitespacesAndNewlines characters, intitialse it with start index
             var prev = content.startIndex //store previous whitespacesAndNewlines character index
             let characterSet = NSCharacterSet.whitespacesAndNewlines;
-            
+            var contentWithTruncateTail:String = ""
             repeat{
                 
                 prev = index;
@@ -59,13 +59,14 @@ class StringContollers{
                         index = stringIndexRange.upperBound
                     }
                 }
+                contentWithTruncateTail = String(content[..<index]) + truncateTail//add truncate tail
             }
-                while ((index <= content.endIndex) && ( String(content[..<index]).boundingRect(with: sizeConstraint, options:NSStringDrawingOptions.usesLineFragmentOrigin,
+                while ((index < content.endIndex) && ( contentWithTruncateTail.boundingRect(with: sizeConstraint, options:NSStringDrawingOptions.usesLineFragmentOrigin,
                                                                                                attributes:attributes,
                                                                                                context: nil).size.height <= textViewContentHeight)); // getout from loop if heght exceeds limited height
-            
-            return (String(content[..<prev]), true); // return the string until previous index
+            //String(content[..<index]).b
+            return (String(content[..<prev]), true, truncateTail); // return the string until previous index
         }
-        return (content, false); // return full content
+        return (content, false, ""); // return full content
     }
 }
