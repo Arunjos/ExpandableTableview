@@ -14,15 +14,17 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var listTableView: UITableView!
     var tableData:TableData?
     let cellReuseIdentifier = "ContentCellIdentifier"
-    var isReadMoreTapped = false
-    var indexOfReadMore = -1
+    var indexesOfExpandCells = [Int]()
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     //MARK: didload methods
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeTableData()
-        registerContentCell()
-        // Do any additional setup after loading the view.
+        initializeTableView()
+        intializeNotifications()
+        addActivityIndicator()
+        startActivityIndicator()
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,8 +33,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //MARK: initialize methods
-    func registerContentCell(){
+    func initializeTableView(){
         listTableView.register(UINib(nibName: "ListTableViewCell", bundle: nil), forCellReuseIdentifier: cellReuseIdentifier)
+        
+        listTableView.rowHeight = UITableViewAutomaticDimension
+        listTableView.estimatedRowHeight = UITableViewAutomaticDimension
+    }
+    
+    func intializeNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(self.deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     func initializeTableData(){
@@ -45,6 +54,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             }else{
                 print(error ?? "")
             }
+            self.stopActivityIndicator()
         })
     }
     
@@ -57,21 +67,53 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListTableViewCell
         
-        if self.isReadMoreTapped && self.indexOfReadMore == indexPath.row{
-            cell?.setupCellForExpand(listData: tableData ?? TableData(), index:indexPath)
+        cell?.hideActionHandler = {(index) in
+            self.indexesOfExpandCells = self.indexesOfExpandCells.filter{$0 != index}
+            let selectedIndexPath = IndexPath(item: index, section: 0)
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        }
+        cell?.readMoreActionHandler = {(index) in
+            self.indexesOfExpandCells.append(index)
+            let selectedIndexPath = IndexPath(item: index, section: 0)
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        }
+        
+        if self.indexesOfExpandCells.contains(indexPath.row) {
+            cell?.setupCellForExpand(listData: tableData ?? TableData(), index:indexPath.row)
         }else{
-            cell?.setupCellForCollapse(listData:tableData ?? TableData(), index:indexPath)
+            cell?.setupCellForCollapse(listData:tableData ?? TableData(), index:indexPath.row)
         }
         return cell ?? ListTableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You tapped cell number \(indexPath.row).")
-//        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 55//UITableViewAutomaticDimension;//Choose your custom row height
+        
+        if self.indexesOfExpandCells.contains(indexPath.row){
+            return UITableViewAutomaticDimension
+        }else{
+            return 55
+        }
     }
     
+    //MARK: activity indicator methods
+    func addActivityIndicator(){
+        activityIndicator.center = self.view.center
+        activityIndicator.color = UIColor.black
+        self.view.addSubview(activityIndicator)
+    }
+    
+    func startActivityIndicator(){
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator(){
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
+    }
+    
+    //MARK: device rotation
+    @objc func deviceRotated(){
+        listTableView.reloadData()
+    }
 }

@@ -64,7 +64,7 @@ class StringContollers{
                 while ((index < content.endIndex) && ( contentWithTruncateTail.boundingRect(with: sizeConstraint, options:NSStringDrawingOptions.usesLineFragmentOrigin,
                                                                                                attributes:attributes,
                                                                                                context: nil).size.height <= textViewContentHeight)); // getout from loop if heght exceeds limited height
-            //String(content[..<index]).b
+            
             return (String(content[..<prev]), true, truncateTail); // return the string until previous index
         }
         return (content, false, ""); // return full content

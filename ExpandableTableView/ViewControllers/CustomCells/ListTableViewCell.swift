@@ -16,10 +16,13 @@ enum ContentState {
 
 class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     
-    
+    //MARK: properties
     @IBOutlet weak var contentTextView: UITextView!
     var contentState:ContentState = .normal
+    var readMoreActionHandler:((Int) -> ())?
+    var hideActionHandler:((Int) -> ())?
     
+    //MARK: default methods
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -31,15 +34,26 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         // Configure the view for the selected state
     }
     
-    func setupCellForExpand(listData:TableData, index:IndexPath){
-        let content = listData.contentList?[index.row] ?? ""
+    //MARK: setup cell methods
+    func setupCellForExpand(listData:TableData, index:Int){
+        let content = listData.contentList?[index] ?? ""
+        self.contentTextView.textContainer.maximumNumberOfLines = 0;// set line length
+        self.contentTextView.attributedText = NSAttributedString(string:"")
+        let contentText = NSMutableAttributedString(string:content)
+        
+        let selectablePart = NSMutableAttributedString(string: "hide")
+        selectablePart.addAttribute(NSAttributedStringKey.link, value: "HideAction", range: NSMakeRange(0,selectablePart.length))
+        contentText.append(selectablePart)
+        self.contentTextView.attributedText = contentText
+        self.contentTextView.delegate = self
+        self.contentTextView.tag = index
+        
     }
     
-    func setupCellForCollapse(listData:TableData, index:IndexPath){
-        let content = listData.contentList?[index.row] ?? ""
+    func setupCellForCollapse(listData:TableData, index:Int){
+        let content = listData.contentList?[index] ?? ""
         self.contentTextView.textContainer.maximumNumberOfLines = 2;// set line length
-        self.contentTextView.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping // set line break mode
-        self.contentTextView.font = UIFont.systemFont(ofSize: 14.0)
+        self.contentTextView.textContainer.lineBreakMode = NSLineBreakMode.byCharWrapping // set line break mode
         self.contentTextView.setNeedsLayout()
         self.contentTextView.layoutIfNeeded()
         let (fitContent, isTrimmed, truncateTail) = StringContollers().stringVisibleIn(textView:self.contentTextView, content: content, truncateTail: "...readmore")
@@ -53,10 +67,9 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
             contentText = NSMutableAttributedString(string:(String(fitContent)), attributes: attributes)
             
             let selectablePart = NSMutableAttributedString(string: truncateTail)
-            selectablePart.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14), range: NSMakeRange(0, selectablePart.length))
             
             // Add an NSLinkAttributeName with a value of an url or anything else
-            selectablePart.addAttribute(NSAttributedStringKey.link, value: "action", range: NSMakeRange(0,selectablePart.length))
+            selectablePart.addAttribute(NSAttributedStringKey.link, value: "ReadMoreAction", range: NSMakeRange(0,selectablePart.length))
             
             // Combine the non-selectable string with the selectable string
             contentText.append(selectablePart)
@@ -67,19 +80,21 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         // Set the text view to contain the attributed text
         self.contentTextView.attributedText = contentText
         self.contentTextView.delegate = self
-        self.contentTextView.tag = 13
+        self.contentTextView.tag = index
         
-        
-//        self.contentTextView.text = fitContent
-        print("maximum fit strings: ", contentText.string)
     }
     
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        
-        // **Perform sign in action here**
-        print("buttoncClicked")
+    //MARK: textview delegate
+    func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange) -> Bool {
+        if url == URL(string:"ReadMoreAction"){
+            self.readMoreActionHandler?(textView.tag)
+        }else if url == URL(string:"HideAction"){
+            self.hideActionHandler?(textView.tag)
+        }
+        print("buttoncClicked at index: ", textView.tag)
         return false
     }
+   
 }
 
 
