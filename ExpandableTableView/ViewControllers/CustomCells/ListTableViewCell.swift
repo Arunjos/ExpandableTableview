@@ -36,8 +36,8 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         let attributes = [
             NSAttributedStringKey.font : contentTextView.font ?? UIFont()]
         let contentText = NSMutableAttributedString(string:content, attributes: attributes)
-        let selectablePart = NSMutableAttributedString(string: "hide", attributes: attributes)
-        selectablePart.addAttribute(NSAttributedStringKey.link, value: "HideAction", range: NSMakeRange(0,selectablePart.length))
+        let selectablePart = NSMutableAttributedString(string: Constants.CONTENTCELL.HIDE_TAIL, attributes: attributes)
+        selectablePart.addAttribute(NSAttributedStringKey.link, value: Constants.CONTENTCELL.HIDE_ACTION, range: NSMakeRange(0,selectablePart.length))
         contentText.append(selectablePart)
         self.contentTextView.attributedText = contentText
         self.contentTextView.delegate = self
@@ -49,9 +49,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         let content = listData.contentList?[index] ?? ""
         self.contentTextView.textContainer.maximumNumberOfLines = Constants.CONTENTCELL.MAX_NUM_LINES;// set line length
         self.contentTextView.textContainer.lineBreakMode = NSLineBreakMode.byCharWrapping // set line break mode
-        self.contentTextView.setNeedsLayout()
-        self.contentTextView.layoutIfNeeded()
-        let (fitContent, isTrimmed, truncateTail) = StringContollers().stringVisibleIn(textView:self.contentTextView, content: content, truncateTail: "...readmore")
+        let (fitContent, isTrimmed, truncateTail) = StringContollers().stringVisibleIn(textView:self.contentTextView, content: content, truncateTail: Constants.CONTENTCELL.READMORE_TAIL)
         
         let attributes = [
             NSAttributedStringKey.font : contentTextView.font ?? UIFont()]
@@ -64,7 +62,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
             let selectablePart = NSMutableAttributedString(string: truncateTail, attributes: attributes)
             
             // Add an NSLinkAttributeName with a value of an url or anything else
-            selectablePart.addAttribute(NSAttributedStringKey.link, value: "ReadMoreAction", range: NSMakeRange(0,selectablePart.length))
+            selectablePart.addAttribute(NSAttributedStringKey.link, value: Constants.CONTENTCELL.READMORE_ACTION, range: NSMakeRange(0,selectablePart.length))
             
             // Combine the non-selectable string with the selectable string
             contentText.append(selectablePart)
@@ -81,9 +79,9 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     
     //MARK: textview delegate
     func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange) -> Bool {
-        if url == URL(string:"ReadMoreAction"){
+        if url == URL(string:Constants.CONTENTCELL.READMORE_ACTION){
             self.readMoreActionHandler?(textView.tag)
-        }else if url == URL(string:"HideAction"){
+        }else if url == URL(string:Constants.CONTENTCELL.HIDE_ACTION){
             self.hideActionHandler?(textView.tag)
         }
         print("buttoncClicked at index: ", textView.tag)

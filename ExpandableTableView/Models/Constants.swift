@@ -10,5 +10,10 @@ import Foundation
 struct Constants {
     struct CONTENTCELL {
         static let MAX_NUM_LINES = 2
+        static let HIDE_TAIL = "hide"
+        static let READMORE_TAIL = "...readmore"
+        static let HIDE_ACTION = "HideAction"
+        static let READMORE_ACTION = "ReadMoreAction"
+        
     }
 }

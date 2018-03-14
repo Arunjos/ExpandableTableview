@@ -78,6 +78,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.reloadRows(at: [selectedIndexPath], with: .none)
         }
         
+        cell?.contentView.frame = CGRect(x: (cell?.contentView.frame.origin.x)!,
+                                         y:(cell?.contentView.frame.origin.y)!,
+                                        width:tableView.frame.width,
+                                        height: CGFloat.greatestFiniteMagnitude)
+        cell?.contentView.layoutIfNeeded()
         if self.indexesOfExpandCells.contains(indexPath.row) {
             cell?.setupCellForExpand(listData: tableData ?? TableData(), index:indexPath.row)
         }else{
@@ -87,16 +92,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        
-        if self.indexesOfExpandCells.contains(indexPath.row){
-            return UITableViewAutomaticDimension
-        }else{
-            if (self.view.traitCollection.horizontalSizeClass != .regular && self.view.traitCollection.verticalSizeClass != .regular) {
-                return 55
-            }else{
-                return 100
-            }
-        }
+        return UITableViewAutomaticDimension
     }
     
     //MARK: activity indicator methods
