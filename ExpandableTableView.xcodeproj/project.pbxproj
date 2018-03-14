@@ -21,6 +21,7 @@
 		CE1C6D0120568BEB008B3BB2 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C6CFF20568BEB008B3BB2 /* ListTableViewCell.swift */; };
 		CE1C6D0220568BEB008B3BB2 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1C6D0020568BEB008B3BB2 /* ListTableViewCell.xib */; };
 		CE1C6D05205802EF008B3BB2 /* StringControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C6D04205802EF008B3BB2 /* StringControllers.swift */; };
+		CECAF238205953C100EE3475 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECAF237205953C100EE3475 /* Constants.swift */; };
 		D9FDE4F6F304528108A1D5BF /* Pods_ExpandableTableViewUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8E8B27513E1FDECBABDB61D /* Pods_ExpandableTableViewUITests.framework */; };
 		F31615E558891D3B35A78317 /* Pods_ExpandableTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 353E71406B5273C13B8FF490 /* Pods_ExpandableTableView.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		CE1C6CFF20568BEB008B3BB2 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		CE1C6D0020568BEB008B3BB2 /* ListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		CE1C6D04205802EF008B3BB2 /* StringControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringControllers.swift; sourceTree = "<group>"; };
+		CECAF237205953C100EE3475 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E69E41F51D62D5565D76F73E /* Pods-ExpandableTableView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExpandableTableView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ExpandableTableView/Pods-ExpandableTableView.release.xcconfig"; sourceTree = "<group>"; };
 		E8E8B27513E1FDECBABDB61D /* Pods_ExpandableTableViewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ExpandableTableViewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				CE1C6CF6205651C9008B3BB2 /* TableContent */,
+				CECAF237205953C100EE3475 /* Constants.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				CE1C6CC3205635CB008B3BB2 /* AppDelegate.swift in Sources */,
 				CE1C6CFA20565B74008B3BB2 /* APIController.swift in Sources */,
 				CE1C6D0120568BEB008B3BB2 /* ListTableViewCell.swift in Sources */,
+				CECAF238205953C100EE3475 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

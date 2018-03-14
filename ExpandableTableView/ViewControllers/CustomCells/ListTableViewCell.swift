@@ -8,17 +8,10 @@
 
 import UIKit
 
-enum ContentState {
-    case collapse
-    case expand
-    case normal
-}
-
 class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     
     //MARK: properties
     @IBOutlet weak var contentTextView: UITextView!
-    var contentState:ContentState = .normal
     var readMoreActionHandler:((Int) -> ())?
     var hideActionHandler:((Int) -> ())?
     
@@ -39,9 +32,11 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         let content = listData.contentList?[index] ?? ""
         self.contentTextView.textContainer.maximumNumberOfLines = 0;// set line length
         self.contentTextView.attributedText = NSAttributedString(string:"")
-        let contentText = NSMutableAttributedString(string:content)
         
-        let selectablePart = NSMutableAttributedString(string: "hide")
+        let attributes = [
+            NSAttributedStringKey.font : contentTextView.font ?? UIFont()]
+        let contentText = NSMutableAttributedString(string:content, attributes: attributes)
+        let selectablePart = NSMutableAttributedString(string: "hide", attributes: attributes)
         selectablePart.addAttribute(NSAttributedStringKey.link, value: "HideAction", range: NSMakeRange(0,selectablePart.length))
         contentText.append(selectablePart)
         self.contentTextView.attributedText = contentText
@@ -52,7 +47,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     
     func setupCellForCollapse(listData:TableData, index:Int){
         let content = listData.contentList?[index] ?? ""
-        self.contentTextView.textContainer.maximumNumberOfLines = 2;// set line length
+        self.contentTextView.textContainer.maximumNumberOfLines = Constants.CONTENTCELL.MAX_NUM_LINES;// set line length
         self.contentTextView.textContainer.lineBreakMode = NSLineBreakMode.byCharWrapping // set line break mode
         self.contentTextView.setNeedsLayout()
         self.contentTextView.layoutIfNeeded()
@@ -66,7 +61,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
 //            let endIndex = fitContent.index(fitContent.endIndex, offsetBy:-13)
             contentText = NSMutableAttributedString(string:(String(fitContent)), attributes: attributes)
             
-            let selectablePart = NSMutableAttributedString(string: truncateTail)
+            let selectablePart = NSMutableAttributedString(string: truncateTail, attributes: attributes)
             
             // Add an NSLinkAttributeName with a value of an url or anything else
             selectablePart.addAttribute(NSAttributedStringKey.link, value: "ReadMoreAction", range: NSMakeRange(0,selectablePart.length))
@@ -94,7 +89,7 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
         print("buttoncClicked at index: ", textView.tag)
         return false
     }
-   
+    
 }
 
 

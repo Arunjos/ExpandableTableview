@@ -91,7 +91,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if self.indexesOfExpandCells.contains(indexPath.row){
             return UITableViewAutomaticDimension
         }else{
-            return 55
+            if (self.view.traitCollection.horizontalSizeClass != .regular && self.view.traitCollection.verticalSizeClass != .regular) {
+                return 55
+            }else{
+                return 100
+            }
         }
     }
     
