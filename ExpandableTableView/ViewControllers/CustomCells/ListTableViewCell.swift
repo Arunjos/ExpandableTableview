@@ -19,6 +19,11 @@ class ListTableViewCell: UITableViewCell, UITextViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.contentTextView.font =  Constants.CONTENTCELL.CONTENT_FONT_IPAD
+        }else{
+            self.contentTextView.font =  Constants.CONTENTCELL.CONTENT_FONT_IPHONE
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
